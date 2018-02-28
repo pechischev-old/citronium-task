@@ -1,0 +1,127 @@
+$HEADER_HEIGHT: 58px;
+
+@mixin drawCross($size) {
+  width: $size;
+  height: $size;
+  background: url("../res/cross.png") no-repeat center;
+  background-size: $size;
+}
+
+@mixin drawCircle($size) {
+  width: $size;
+  height: $size;
+  border-radius: 50%;
+  border: 2px solid #2D9CDB;
+}
+
+@import "field";
+
+body {
+  padding: 0;
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container {
+  position: relative;
+  display: block;
+  width: 535px;
+  min-height: 760px;
+  height: auto;
+  margin: auto;
+}
+
+.header {
+  width: 100%;
+  height: $HEADER_HEIGHT;
+  background-color: #212121;
+
+  &__title {
+    font-size: 20px;
+    color: #FFFFFF;
+    padding: 16px 21px 15px;
+  }
+}
+
+.content {
+  height: auto;
+  padding: 0 24px;
+}
+
+.user-container {
+  margin: 5px;
+  height: 55px;
+
+  $ICON_SIZE: 20px;
+
+  .user {
+    position: relative;
+    display: inline;
+    padding: 12px 0 8px;
+    font-size: 18px;
+
+    &_active {
+      border-bottom: 1px solid #4F4F4F;
+    }
+  }
+
+  .owner {
+    float: left;
+    padding-left: 0;
+    padding-right: 30px;
+
+    &:after {
+      content: '';
+      position: absolute;
+      margin-top: 3px;
+      margin-left: 7px;
+
+      @include drawCross($ICON_SIZE);
+    }
+  }
+
+  .opponent {
+    float: right;
+    padding-right: 0;
+    padding-left: 30px;
+
+    &:after {
+      content: '';
+      position: absolute;
+      left: 0;
+      display: inline;
+
+      @include drawCircle($ICON_SIZE);
+    }
+  }
+}
+
+.time-container {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 22px;
+}
+
+.button {
+  margin: auto;
+  width: 135px;
+  height: 40px;
+  background-color: #009688;
+  text-align: center;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  &:active {
+    background-color: #00796b;
+  }
+
+  &__text {
+    display: inline-block;
+    margin-top: 8px;
+    color: #FFFFFF;
+    user-select: none;
+  }
+}

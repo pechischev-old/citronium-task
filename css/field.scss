@@ -1,0 +1,74 @@
+
+.field-container {
+  width: fit-content;
+  margin: auto;
+  margin-bottom: 15px;
+}
+
+.item {
+  position: relative;
+  width: 80px;
+  height: 80px;
+
+  &__icon {
+    $ITEM_ICON_SIZE: 70px;
+
+    width: $ITEM_ICON_SIZE;
+    height: $ITEM_ICON_SIZE;
+
+    &_circle {
+      @include drawCircle($ITEM_ICON_SIZE);
+    }
+
+    &_cross {
+      @include drawCross($ITEM_ICON_SIZE);
+
+      padding: 5px;
+    }
+  }
+}
+
+.field {
+
+  &__item {
+    border: 1px solid #F2C94C;
+    float: left;
+    box-sizing: border-box;
+
+    &_left {
+      border-left: 0;
+    }
+
+    &_left-top {
+      border-left: 0;
+      border-top: 0;
+    }
+
+    &_top {
+      border-top: 0;
+    }
+
+    &_right-top {
+      border-right: 0;
+      border-top: 0;
+    }
+
+    &_right {
+      border-right: 0;
+    }
+
+    &_right-bottom {
+      border-right: 0;
+      border-bottom: 0;
+    }
+
+    &_bottom {
+      border-bottom: 0;
+    }
+
+    &_left-bottom {
+      border-left: 0;
+      border-bottom: 0;
+    }
+  }
+}
