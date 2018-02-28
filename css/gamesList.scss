@@ -1,0 +1,129 @@
+
+.games-list {
+  .user-container {
+    .user {
+      display: block;
+      margin: 12px 0 8px;
+      padding: 0;
+    }
+
+    .delimeter {
+      border-bottom: 1px solid #D1D1D1;
+      margin-right: 125px;
+    }
+  }
+
+  .games-container {
+    min-height: 500px;
+  }
+
+  .game-item {
+    position: relative;
+    width: 115px;
+    height: 116px;
+    float: left;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    background-color: #828282;
+    color: #F2F2F2;
+    font-size: 16px;
+    cursor: pointer;
+
+    &:nth-child(4n) {
+      margin-right: 0;
+    }
+
+    &__opponent {
+      &:before {
+        content: '';
+        display: block;
+        border-top: none;
+        margin-right: 15px;
+        margin-bottom: 5px;
+      }
+    }
+
+    &_resolved {
+      background-color: #E0E0E0;
+
+      .game-item__opponent {
+        &:before {
+          border-top: 1px solid #BDBDBD;
+        }
+      }
+    }
+
+    &_launched {
+      background-color: #BDBDBD;
+
+      .game-item__opponent {
+        &:before {
+          border-top: 1px solid #828282;
+        }
+      }
+    }
+
+    .user {
+      padding: 5px;
+      height: 42px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+
+      &_winner {
+        color: #F2994A;
+
+        &:after {
+          $ICON_SIZE: 14px;
+
+          content: '';
+          background: url("../res/checkmark.png") no-repeat center;
+          background-size: $ICON_SIZE;
+          width: $ICON_SIZE;
+          height: $ICON_SIZE;
+          display: block;
+          position: absolute;
+          right: 12px;
+          top: 10px;
+        }
+      }
+
+      &_loser {
+        color: #616161;
+      }
+    }
+
+    &__time {
+      position: absolute;
+      bottom: 2px;
+      right: 6px;
+      font-size: 14px;
+      color: #4F4F4F;
+    }
+  }
+
+  .added_button {
+    position: relative;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background-color: #009688;
+    text-align: center;
+    float: right;
+    margin-top: 5px;
+    cursor: pointer;
+    box-shadow: -1px 8px 13px rgba(0,0,0,0.5);
+
+    span {
+      color: white;
+      font-size: 35px;
+    }
+
+    &:hover {
+      opacity: 0.8;
+    }
+
+    &:active {
+      background-color: #007365;
+    }
+  }
+}

@@ -11,12 +11,12 @@
         <div class="header">
             <div class="header__title">Tic tac toe</div>
         </div>
-        <div class="content game">
+        <div class="content game" id="game">
             <div class="user-container">
                 <div class="user owner">text</div>
                 <div class="user opponent user_active">text2</div>
             </div>
-            <div class="field-container field" style="width: 246px; height: 246px">
+            <div class="field-container field" style="width: 246px; height: 246px" id="field">
                 <div class="field__item item field__item_left-top">
                     <div class="item__icon item__icon_circle" ></div>
                 </div>
@@ -49,6 +49,35 @@
             </div>
             <div class="time-container">00:05:04</div>
             <div class="button"><span class="button__text">Press me</span></div>
+        </div>
+        <div class="content games-list" id="games-list" style="display: none">
+            <div class="user-container">
+                <div class="user">Chack norris</div>
+                <div class="delimeter"></div>
+            </div>
+            <div class="games-container" id="games">
+                <div class="game-item">
+                    <div class="game-item__owner user">fsdfsdfsdfsdf sdf sdf</div>
+                    <div class="game-item__opponent user"></div>
+                    <div class="game-item__time">00:05:45</div>
+                </div>
+                <div class="game-item">
+                    <div class="game-item__owner user">fsdfsdfsdfsdf sdf sdf</div>
+                    <div class="game-item__opponent user"></div>
+                    <div class="game-item__time">00:05:45</div>
+                </div>
+                <div class="game-item game-item_launched">
+                    <div class="game-item__owner user">Алеша Попович</div>
+                    <div class="game-item__opponent user">Тугарин Змей</div>
+                    <div class="game-item__time">00:05:45</div>
+                </div>
+                <div class="game-item game-item_resolved">
+                    <div class="game-item__owner user user_winner">Илья Муромец</div>
+                    <div class="game-item__opponent user user_loser">Добрыня</div>
+                    <div class="game-item__time">00:05:45</div>
+                </div>
+            </div>
+            <div class="added_button"><span>+</span></div>
         </div>
     </div>
 </body>

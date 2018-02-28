@@ -15,6 +15,7 @@ $HEADER_HEIGHT: 58px;
 }
 
 @import "field";
+@import "gamesList";
 
 body {
   padding: 0;
@@ -35,6 +36,7 @@ body {
   width: 100%;
   height: $HEADER_HEIGHT;
   background-color: #212121;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.5);
 
   &__title {
     font-size: 20px;
