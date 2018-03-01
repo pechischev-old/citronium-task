@@ -123,6 +123,16 @@ export default class Game extends EventDispatcher {
 		}
 	}
 
+	/** @return {boolean} */
+	isPlaying() {
+		return this._state == GameState.PLAYING;
+	}
+
+	/** @return {boolean} */
+	isReady() {
+		return this._state == GameState.READY;
+	}
+
 	/**
 	 * @param {Player} player
 	 */

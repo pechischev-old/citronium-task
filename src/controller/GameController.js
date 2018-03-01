@@ -23,11 +23,20 @@ export default class GameController extends EventDispathcer {
 		this.invalidate();
 	}
 
+	surrender() {
+		if (this._game)
+		{
+			this._game.setState(GameState.DONE);
+			const result = this._game.currentPlayer() == Player.OPPONENT ? Result.OWNER : Result.OPPONENT;
+			this._game.setResult(result);
+		}
+	}
+
 	/**
 	 * @return {boolean}
 	 */
 	isPlayingAvailable() {
-		return this._game && (this._game.state() == GameState.PLAYING || this._game.state() == GameState.READY);
+		return this._game && (this._game.isPlaying() || this._game.isReady());
 	}
 
 	/**
@@ -53,12 +62,11 @@ export default class GameController extends EventDispathcer {
 	}
 
 	invalidate() {
-		if (!this._game.startTime() && (this._game.state() == GameState.PLAYING))
+		this._updateGameState();
+		if (!this._game.startTime() && (this._game.isPlaying()))
 		{
 			this._game.setStartTime(Date.now());
 		}
-
-		this._updateGameState();
 		this._updateResult();
 	}
 
@@ -85,6 +93,10 @@ export default class GameController extends EventDispathcer {
 						state = GameState.PLAYING;
 						break;
 					}
+				}
+				if (state == GameState.PLAYING)
+				{
+					break;
 				}
 			}
 		}

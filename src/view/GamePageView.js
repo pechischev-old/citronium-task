@@ -4,6 +4,7 @@ import FieldItemView from './FieldItemView';
 import GameController from '../controller/GameController';
 import Timer from '../components/Timer';
 import {default as Player} from '../model/Player';
+import GameState from "../model/GameState";
 
 const OWNER_MODIFIER = "cross";
 const OPPONENT_MODIFIER = "circle";
@@ -17,11 +18,9 @@ export default class GamePageView extends Component {
 	constructor(gameController) {
 		super({container: document.getElementById("game")});
 
-		const button = new Component({container: document.getElementById("back-button")});
-		button.listen("click", () => {
-			this.dispatch("showGamesList");
-			this.destruct();
-		});
+		/** @private {Component} */
+		this._button = new Component({container: document.getElementById("back-button")});
+		this._button.listen("click", this._onButtonClick.bind(this));
 		/** @private {?Game} */
 		this._game = null;
 		/** @private {GameController} */
@@ -70,6 +69,7 @@ export default class GamePageView extends Component {
 	}
 
 	invalidate() {
+		this._updateButtonText();
 		if (this._game.isGameOver())
 		{
 			this.toggleClassName("game_invalid", true);
@@ -137,6 +137,12 @@ export default class GamePageView extends Component {
 		}
 	}
 
+	/** @private */
+	_updateButtonText() {
+		const textContainer = this._button.container.childNodes[0];
+		textContainer.textContent = (this._game.isPlaying()) ? "Surrender" : "Back";
+	}
+
 	/**
 	 * @param {number} row
 	 * @param {number} col
@@ -201,6 +207,17 @@ export default class GamePageView extends Component {
 		const item = new FieldItemView(coordinate, modifier);
 		item.listen("click", this._onItemClick.bind(this, item));
 		return item;
+	}
+
+	/** @private */
+	_onButtonClick() {
+		if (this._game.isPlaying())
+		{
+			this._gameController.surrender();
+		}
+
+		this.dispatch("showGamesList");
+		this.destruct();
 	}
 
 	/**
