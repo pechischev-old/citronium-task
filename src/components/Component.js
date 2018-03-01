@@ -1,29 +1,29 @@
 import EventDispatcher from './EventDispatcher';
 
 export default class Component extends EventDispatcher {
-    constructor(args = {}) {
-        super();
-        const {className, tagName, container} = args;
+	constructor(args = {}) {
+		super();
+		const {className, tagName, container} = args;
 
-        this.container = container || this._createElement((tagName || "div"), className);
+		this.container = container || this._createElement((tagName || "div"), className);
 
-        this._width = 0;
-        this._height = 0;
-    }
+		this._width = 0;
+		this._height = 0;
+	}
 
-    addChild(child) {
-        const node = (child instanceof Component) ? child.container : child;
-        this.container.appendChild(node);
-    }
+	addChild(child) {
+		const node = (child instanceof Component) ? child.container : child;
+		this.container.appendChild(node);
+	}
 
-    removeChild(child) {
-        if (this.container.contains(child))
-        {
-            this.container.removeChild(child);
-        }
-    }
+	removeChild(child) {
+		if (this.container.contains(child))
+		{
+			this.container.removeChild(child);
+		}
+	}
 
-    setWidth(width) {
+	setWidth(width) {
 		this._width = width;
 		this.container.style.width = `${width}px`;
 	}
@@ -41,7 +41,7 @@ export default class Component extends EventDispatcher {
 		{
 			this.container.classList.add(classNames);
 		}
-    }
+	}
 
 	/**
 	 * @param {string} className
@@ -78,66 +78,66 @@ export default class Component extends EventDispatcher {
 		{
 			this.container.classList.remove(classNames);
 		}
-    }
+	}
 
-    setTextContent(text) {
-        if (this.container.textContent != "undefined")
-        {
+	setTextContent(text) {
+		if (this.container.textContent != "undefined")
+		{
 			this.container.textContent = text;
-        }
-        else
-        {
+		}
+		else
+		{
 			this.container.value = text;
-        }
-    }
+		}
+	}
 
-    removeChildren() {
-        while(this.container.firstChild)
-        {
-            this.removeChild(this.container.firstChild);
-        }
-    }
+	removeChildren() {
+		while(this.container.firstChild)
+		{
+			this.removeChild(this.container.firstChild);
+		}
+	}
 
-    /**
-     * @param {boolean} value
-     */
-    setVisible(value) {
-        this.container.style.display = (value) ? "" : "none";
-    }
+	/**
+	 * @param {boolean} value
+	 */
+	setVisible(value) {
+		this.container.style.display = (value) ? "" : "none";
+	}
 
-    /**
-     * @param {string} eventType
-     * @param {function(event):*} handler
-     */
-    listen(eventType, handler) {
-        this.container.addEventListener(eventType, handler);
-    }
+	/**
+	 * @param {string} eventType
+	 * @param {function(event):*} handler
+	 */
+	listen(eventType, handler) {
+		this.container.addEventListener(eventType, handler);
+	}
 
-    /**
-     * @param {string} eventType
-     * @param {function(event):*} handler
-     */
-    unlisten(eventType, handler) {
-        this.container.removeEventListener(eventType, handler);
-    }
+	/**
+	 * @param {string} eventType
+	 * @param {function(event):*} handler
+	 */
+	unlisten(eventType, handler) {
+		this.container.removeEventListener(eventType, handler);
+	}
 
-    /**
-     * @param {string} elementTag
-     * @param {string} className
-     * @param {Element} parentElement
-     * @returns {Element}
-     * @protected
-     */
-    _createElement(elementTag, className, parentElement) {
-        const element = document.createElement(elementTag);
-        if (className)
-        {
-            element.setAttribute("class", className);
-        }
-        if (parentElement)
-        {
-            parentElement.appendChild(element);
-        }
-        return element;
-    }
+	/**
+	 * @param {string} elementTag
+	 * @param {string} className
+	 * @param {Element} parentElement
+	 * @returns {Element}
+	 * @protected
+	 */
+	_createElement(elementTag, className, parentElement) {
+		const element = document.createElement(elementTag);
+		if (className)
+		{
+			element.setAttribute("class", className);
+		}
+		if (parentElement)
+		{
+			parentElement.appendChild(element);
+		}
+		return element;
+	}
 }

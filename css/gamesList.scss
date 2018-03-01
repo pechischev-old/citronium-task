@@ -44,21 +44,21 @@
     }
 
     &_resolved {
-      background-color: #E0E0E0;
-
-      .game-item__opponent {
-        &:before {
-          border-top: 1px solid #BDBDBD;
-        }
-      }
-    }
-
-    &_launched {
       background-color: #BDBDBD;
 
       .game-item__opponent {
         &:before {
           border-top: 1px solid #828282;
+        }
+      }
+    }
+
+    &_resolved-with-winner {
+      background-color: #E0E0E0;
+
+      .game-item__opponent {
+        &:before {
+          border-top: 1px solid #BDBDBD;
         }
       }
     }

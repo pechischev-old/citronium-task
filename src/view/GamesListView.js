@@ -24,8 +24,6 @@ export default class GamesListView extends Component {
 		this._addGameButton.listen("click", () => {
 			this.dispatch("appendGame");
 		});
-
-		this.invalidate();
 	}
 
 	/**
@@ -39,6 +37,4 @@ export default class GamesListView extends Component {
 		this._gamesContainer.addChild(gameView);
 		this._gamesListView.push(gameView);
 	}
-
-	invalidate() {}
 }

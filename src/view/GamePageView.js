@@ -2,6 +2,7 @@ import Component from '../components/Component';
 import Game from '../model/Game';
 import FieldItemView from './FieldItemView';
 import GameController from '../controller/GameController';
+import Timer from '../components/Timer';
 import {default as Player} from '../model/Player';
 
 const OWNER_MODIFIER = "cross";
@@ -19,6 +20,7 @@ export default class GamePageView extends Component {
 		const button = new Component({container: document.getElementById("back-button")});
 		button.listen("click", () => {
 			this.dispatch("showGamesList");
+			this.destruct();
 		});
 		/** @private {?Game} */
 		this._game = null;
@@ -34,15 +36,46 @@ export default class GamePageView extends Component {
 		this._opponentField = new Component({container: document.getElementsByClassName("opponent")[0]});
 		/** @private {Component} */
 		this._field = new Component({container: document.getElementById("field")});
+
+		/** @private {Component} */
+		this._timeContainer = new Component({container: document.getElementsByClassName("time-container")[0]});
+
+		this._timer = new Timer();
+		this._timer.addEventListener("ontick", () => {
+			if (!this._game)
+			{
+				return;
+			}
+			this._timeContainer.setTextContent(this._game.getGameTime());
+		})
 	}
 
 	/**
 	 * @param {!Game} game
 	 */
 	initGame(game) {
+		this.destruct();
+
 		this._game = game;
+		this._game.addEventListener("changeGameState", this.invalidate.bind(this));
 		this._gameController.initGame(game);
+		if (!this._game.isGameOver())
+		{
+			this._timer.run();
+		}
+		this._timeContainer.setTextContent(this._game.getGameTime());
+
 		this.updatePage(game);
+		this.invalidate();
+	}
+
+	invalidate() {
+		if (this._game.isGameOver())
+		{
+			this.toggleClassName("game_invalid", true);
+			return;
+		}
+		this.toggleClassName("game_invalid", !this._gameController.isPlayingAvailable())
 	}
 
 	/**
@@ -64,9 +97,6 @@ export default class GamePageView extends Component {
 		this._opponentField.toggleClassName(activeClass, (this._game.currentPlayer() == Player.OPPONENT));
 
 		this._createField();
-
-		// TODO: вернуть после внесения изменений по обновлению состояния игры
-		//this.toggleClassName("game_invalid", this._gameController.isPlayingAvailable())
 	}
 
 	/** @private */
@@ -188,5 +218,14 @@ export default class GamePageView extends Component {
 		this._field.container.setAttribute("style", "");
 		this._ownerField.setTextContent("");
 		this._opponentField.setTextContent("");
+	}
+
+	destruct() {
+		if (this._game)
+		{
+			this._clearPage();
+			this._game.removeEventListener("changeGameState", this.invalidate.bind(this));
+			this._timer.stop();
+		}
 	}
 };
