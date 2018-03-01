@@ -78,9 +78,9 @@ export default class GameController extends EventDispathcer {
 			const field = this._game.fieldData();
 			for(const row of field)
 			{
-				for(const column of row)
+				for(const item of row)
 				{
-					if (field[row][column])
+					if (item)
 					{
 						state = GameState.PLAYING;
 						break;

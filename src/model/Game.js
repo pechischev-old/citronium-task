@@ -151,8 +151,11 @@ export default class Game extends EventDispatcher {
 	 * @param {!User} opponent
 	 */
 	setOpponent(opponent) {
-		this._opponent = opponent;
-		this.dispatch("changeOpponent");
+		if (this._opponent != opponent)
+		{
+			this._opponent = opponent;
+			this.dispatch("changeOpponent");
+		}
 	}
 
 	/**

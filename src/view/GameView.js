@@ -36,6 +36,8 @@ export default class GameView extends Component {
 		this._timer = new Timer();
 		this._timer.addEventListener("ontick", this._onTimerTick.bind(this));
 		this._timer.run();
+
+		this._onChangeResult();
 	}
 
 	/**
@@ -62,22 +64,19 @@ export default class GameView extends Component {
 
 	/** @private */
 	_onChangeResult() {
-		this._ownerContainer.addClassNames(this._getClassNameByResult(this._game.result()));
-		this._opponentContainer.addClassNames(this._getClassNameByResult(this._game.result()));
-
-		const className = (this._game.result() == Result.DRAW) ? "game-item_resolved" : "game-item_resolved-with-winner";
-		this.addClassNames(className);
-	}
-
-	/**
-	 * @param {Result} result
-	 * @private
-	 */
-	_getClassNameByResult(result) {
-		if (result == Result.DRAW)
+		if (!this._game.result())
 		{
-			return "";
+			return;
 		}
-		return (result == Result.OWNER) ? "user_winner" : "user_loser";
+		const result = this._game.result();
+		if (result != Result.DRAW)
+		{
+			this._ownerContainer.addClassNames((result == Result.OWNER) ? "user_winner" : "user_loser");
+			this._opponentContainer.addClassNames((result == Result.OPPONENT) ? "user_winner" : "user_loser");
+		}
+		this._opponentContainer.setTextContent(this._game.opponent().name());
+
+		const className = (result == Result.DRAW) ? "game-item_resolved" : "game-item_resolved-with-winner";
+		this.addClassNames(className);
 	}
 }

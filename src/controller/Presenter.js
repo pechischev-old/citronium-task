@@ -35,7 +35,28 @@ export default class Presenter {
 		this._gamePageView.setVisible(false);
 		this._gamePageView.addEventListener("showGamesList", () => {
 			this.showGamesListPage();
-		})
+		});
+
+		this._init();
+	}
+
+	/** @private */
+	_init() {
+		for (const game of this._gamesList)
+		{
+			this._appendGame(game);
+		}
+	}
+
+	/**
+	 * @param {Game} game
+	 * @private
+	 */
+	_appendGame(game) {
+		game.addEventListener("updateFieldData", () => {
+			this._gamePageView.updatePage(game);
+		});
+		this._gamesListView.appendGameView(game);
 	}
 
 	start() {
@@ -48,18 +69,18 @@ export default class Presenter {
     createNewGame(data) {
 		const {user, size, field} = data;
 		const game = new Game(user, size, field);
-		game.addEventListener("updateFieldData", () => {
-			this._gamePageView.updatePage(game);
-		});
-
+		this._appendGame(game);
 		this._gamesList.push(game);
-		this._gamesListView.appendGameView(game);
     }
 
     showGamePage(id) {
 		const game = this._gamesList.find((game) => game.id() == id);
 		if (game)
         {
+			if (game.owner().name() != this._user.name() && !game.opponent())
+			{
+				game.setOpponent(this._user);
+			}
 			this._gamesListView.setVisible(false);
 			this._gamePageView.setVisible(true);
 			this._gamePageView.initGame(game);

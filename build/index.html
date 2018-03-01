@@ -28,6 +28,47 @@
             <div class="added_button" id="create-game"><span>+</span></div>
         </div>
     </div>
+    <script>
+    const json = [
+        {
+			owner: "Chuck Norris",
+            size: 3,
+            state: 0,
+            stroke: "X",
+            field: [
+                ["","",""],
+                ["","",""],
+                ["","",""],
+            ]
+		},
+		{
+			owner: "Chuck Norris",
+			opponent: "Allen",
+			size: 3,
+			state: 2,
+			gameResult: "owner",
+			stroke: "0",
+			field: [
+                ["X","0",""],
+                ["","X","0"],
+                ["","","X"],
+		    ]
+		},
+		{
+			owner: "Chuck",
+			opponent: "Braid",
+			size: 3,
+			state: 2,
+			gameResult: "draw",
+			stroke: "0",
+			field: [
+				["X","0","X"],
+				["0","X","0"],
+				["X","X","0"],
+			]
+		}
+    ];
+    </script>
     <script src="./js/main.js"></script>
 </body>
 </html>

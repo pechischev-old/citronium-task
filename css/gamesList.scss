@@ -64,10 +64,13 @@
     }
 
     .user {
-      padding: 5px;
+      position: relative;
       height: 42px;
+      padding: 5px;
       text-overflow: ellipsis;
       overflow: hidden;
+      padding-right: 25px;
+      word-break: break-word;
 
       &_winner {
         color: #F2994A;
@@ -82,7 +85,7 @@
           height: $ICON_SIZE;
           display: block;
           position: absolute;
-          right: 12px;
+          right: 8px;
           top: 10px;
         }
       }
