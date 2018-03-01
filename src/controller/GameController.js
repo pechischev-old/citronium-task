@@ -1,31 +1,44 @@
 import Game from '../model/Game';
-import User from 'User';
-import GameState from 'GameState';
+import EventDispathcer from '../components/EventDispatcher';
+import {default as Player} from '../model/Player';
+import {default as GameState} from '../model/GameState';
 
-const OWNER_SYMBOL = "X";
-const OPPONENT_SYMBOL = "Y";
-
-class GameController {
-    /**
-     * @param {!User} user
-     * @param {!Game} game
-     */
-    constructor(user, game) {
-        this._user = user;
-
-        this._game = game;
+export default class GameController extends EventDispathcer {
+    constructor() {
+        super();
+        /** @private {Game} */
+        this._game = null;
+		/** @private {Player} */
+        this._player = null;
     }
 
-    /**
-     * @param {{
-     *    row: number,
-     *    col: number,
-     *    value: string
-     * }} step
-     */
-    setStep(step) {
-        const { row, col, value } = step;
+	/**
+	 * @param {Game} game
+	 */
+	initGame(game) {
+		this._game = game;
+		this._player = game.currentPlayer();
 
+		this._updateStateGame();
+    }
+
+	/**
+	 * @return {boolean}
+	 */
+	isPlayingAvailable() {
+	    return this._game && (this._game.state() != GameState.PLAYING || this._game.state() != GameState.READY);
+    }
+
+	/**
+	 * @param {number} row
+	 * @param {number} col
+	 */
+	setStep(row, col) {
+        if (this.isPlayingAvailable())
+        {
+        	// TODO: вернуть эту опцию
+            //return;
+        }
         const size = this._game.fieldSize();
         const isCorrectRowValue = (0 <= row && row < size);
         const isCorrectColumnValue = (0 <= col && col < size);
@@ -34,15 +47,46 @@ class GameController {
             throw new Error(`Step is contains invalid value: ${step}`);
         }
 
-        this._invalidateField(row, col, value );
+		this._game.setState(GameState.PLAYING);
+        this._invalidateField(row, col, this._player );
     }
 
     invalidate() {
 
     }
 
+	/**
+	 * @private
+	 */
+    _updateStateGame() {
+		let state = GameState.READY;
+		if (!this._game.opponent())
+		{
+			state = GameState.WAIT;
+		}
+		else if (this._game.result())
+		{
+			state = GameState.DONE;
+		}
+		else
+		{
+			const field = this._game.fieldData();
+			for(const row of field)
+			{
+				for(const column of row)
+				{
+					if (field[row][column])
+					{
+						state = GameState.PLAYING;
+						break;
+					}
+				}
+			}
+		}
+		this._game.setState(state);
+    }
+
     /**
-     *
      * @private
      */
     _checkWinner() {
@@ -91,14 +135,21 @@ class GameController {
     }
 
     /**
-     * @param {number} x
-     * @param {number} y
+     * @param {number} row
+     * @param {number} column
      * @param {string} value
      * @private
      */
-    _invalidateField(x, y, value) {
+    _invalidateField(row, column, value) {
         const field = this._game.fieldData();
-        field[y][x] = value;
-        this._game.setFieldData(field);
+        if (field[row][column] != "")
+        {
+            return;
+        }
+        field[row][column] = value;
+		this._player = (this._player == Player.OWNER) ? Player.OPPONENT: Player.OWNER;
+		this._game.setCurrentPlayer(this._player);
+
+		this._game.setFieldData(field);
     }
 }

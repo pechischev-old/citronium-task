@@ -1,4 +1,5 @@
 $HEADER_HEIGHT: 58px;
+$CONTENT_WIDTH: 535px;
 
 @mixin drawCross($size) {
   width: $size;
@@ -26,7 +27,7 @@ body {
 .container {
   position: relative;
   display: block;
-  width: 535px;
+  width: $CONTENT_WIDTH;
   min-height: 760px;
   height: auto;
   margin: auto;
@@ -102,6 +103,20 @@ body {
   text-align: center;
   margin-bottom: 25px;
   font-size: 22px;
+}
+
+.game {
+  &_invalid {
+    > div {
+      opacity: 0.35;
+      pointer-events: none;
+    }
+
+    .button {
+      opacity: 1;
+      pointer-events: all;
+    }
+  }
 }
 
 .button {

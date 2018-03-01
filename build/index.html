@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Tic tac toe</title>
-    <link rel="stylesheet" href="css/styles.css"></link>
-    <script src="js/main.js" ></script>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
     <div class="container">
@@ -13,11 +12,11 @@
         </div>
         <div class="content game" id="game">
             <div class="user-container">
-                <div class="user owner">text</div>
-                <div class="user opponent user_active">text2</div>
+                <div class="user owner user_active"></div>
+                <div class="user opponent"></div>
             </div>
             <div class="field-container field" style="width: 246px; height: 246px" id="field">
-                <div class="field__item item field__item_left-top">
+                <!--<div class="field__item item field__item_left-top">
                     <div class="item__icon item__icon_circle" ></div>
                 </div>
                 <div class="field__item item field__item_top">
@@ -45,18 +44,18 @@
                 </div>
                 <div class="field__item item field__item_right-bottom">
                     <div class="item__icon"></div>
-                </div>
+                </div>!-->
             </div>
             <div class="time-container">00:05:04</div>
-            <div class="button"><span class="button__text">Press me</span></div>
+            <div class="button" id="back-button"><span class="button__text">Press me</span></div>
         </div>
-        <div class="content games-list" id="games-list" style="display: none">
+        <div class="content games-list" id="games-list">
             <div class="user-container">
-                <div class="user">Chack norris</div>
+                <div class="user" id="user"></div>
                 <div class="delimeter"></div>
             </div>
-            <div class="games-container" id="games">
-                <div class="game-item">
+            <div class="games-container" id="games-container">
+                <!--<div class="game-item">
                     <div class="game-item__owner user">fsdfsdfsdfsdf sdf sdf</div>
                     <div class="game-item__opponent user"></div>
                     <div class="game-item__time">00:05:45</div>
@@ -75,10 +74,11 @@
                     <div class="game-item__owner user user_winner">Илья Муромец</div>
                     <div class="game-item__opponent user user_loser">Добрыня</div>
                     <div class="game-item__time">00:05:45</div>
-                </div>
+                </div>!-->
             </div>
-            <div class="added_button"><span>+</span></div>
+            <div class="added_button" id="create-game"><span>+</span></div>
         </div>
     </div>
+    <script src="./js/main.js"></script>
 </body>
 </html>

@@ -1,14 +1,11 @@
-import GameController from 'controller/GameController';
-import User from 'model/User';
+import User from './model/User';
+import Presenter from './controller/Presenter';
 
-function start() {
-
-    let userName = '123';
-    while (!userName)
-    {
-        userName = prompt("Enter your name", "name");
-    }
-
-   const user = new User(userName);
-   const gameController = new GameController(user);
+let userName = "user";
+while (!userName)
+{
+	userName = prompt("Enter your name", "name");
 }
+
+const user = new User(userName);
+const presenter = new Presenter(user, null);
