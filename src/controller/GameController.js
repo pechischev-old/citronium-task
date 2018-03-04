@@ -54,7 +54,7 @@ export default class GameController extends EventDispathcer {
 		const isCorrectColumnValue = (0 <= col && col < size);
 		if (!(isCorrectRowValue && isCorrectColumnValue))
 		{
-			throw new Error(`Step is contains invalid value: ${step}`);
+			throw new Error("Invalid value to step");
 		}
 
 		this._invalidateField(row, col, this._player );

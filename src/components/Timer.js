@@ -1,4 +1,5 @@
 import EventDispatcher from './EventDispatcher';
+import {default as Events} from '../event/Events';
 
 export default class Timer extends EventDispatcher {
 	/**
@@ -18,16 +19,16 @@ export default class Timer extends EventDispatcher {
 	}
 
 	run() {
-		this.dispatch("onstart");
+		this.dispatch(Events.TIMER_START);
 		this._start = Date.now();
 		this._keyInterval = setInterval(() => {
-			this.dispatch("ontick");
+			this.dispatch(Events.TICK);
 		}, this._delay);
 	}
 
 	stop() {
 		clearInterval(this._keyInterval);
-		this.dispatch("onstop");
+		this.dispatch(Events.TIMER_STOP);
 	}
 
 	/**

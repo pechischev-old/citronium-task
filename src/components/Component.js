@@ -6,9 +6,6 @@ export default class Component extends EventDispatcher {
 		const {className, tagName, container} = args;
 
 		this.container = container || this._createElement((tagName || "div"), className);
-
-		this._width = 0;
-		this._height = 0;
 	}
 
 	addChild(child) {
@@ -24,12 +21,10 @@ export default class Component extends EventDispatcher {
 	}
 
 	setWidth(width) {
-		this._width = width;
 		this.container.style.width = `${width}px`;
 	}
 
 	setHeight(height) {
-		this._height = height;
 		this.container.style.height = `${height}px`;
 	}
 

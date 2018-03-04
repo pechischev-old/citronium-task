@@ -2,6 +2,8 @@ import Component from '../components/Component';
 import Game from '../model/Game';
 import Timer from '../components/Timer';
 import {default as Result} from '../model/Result';
+import {default as Events} from '../event/Events';
+import {default as CustomEvents} from '../event/CustomEvents';
 
 export default class GameView extends Component {
 	/**
@@ -26,7 +28,7 @@ export default class GameView extends Component {
 		}
 		this.addChild(this._opponentContainer);
 
-		this._game.addEventListener("changeResult", this._onChangeResult.bind(this));
+		this._game.addEventListener(CustomEvents.CHANGE_GAME_RESULT, this._onChangeResult.bind(this));
 
 		/** @private {Component} */
 		this._timeContainer = new Component({className: "game-item__time"});
@@ -34,7 +36,7 @@ export default class GameView extends Component {
 		this.addChild(this._timeContainer);
 
 		this._timer = new Timer();
-		this._timer.addEventListener("ontick", this._onTimerTick.bind(this));
+		this._timer.addEventListener(Events.TICK, this._onTimerTick.bind(this));
 		this._timer.run();
 
 		this._onChangeResult();
@@ -47,10 +49,10 @@ export default class GameView extends Component {
 		return this._game.id();
 	}
 
-	destruct() {
+	destroy() {
 		this._timer.stop();
-		this._timer.removeEventListener("ontick", this._onTimerTick.bind(this));
-		this._game.removeEventListener("changeResult", this._onChangeResult.bind(this));
+		this._timer.removeEventListener(Events.TICK, this._onTimerTick.bind(this));
+		this._game.removeEventListener(CustomEvents.CHANGE_GAME_RESULT, this._onChangeResult.bind(this));
 	}
 
 	/** @private */

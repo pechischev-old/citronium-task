@@ -4,7 +4,8 @@ import FieldItemView from './FieldItemView';
 import GameController from '../controller/GameController';
 import Timer from '../components/Timer';
 import {default as Player} from '../model/Player';
-import GameState from "../model/GameState";
+import {default as CustomEvents} from '../event/CustomEvents';
+import {default as Events} from '../event/Events';
 
 const OWNER_MODIFIER = "cross";
 const OPPONENT_MODIFIER = "circle";
@@ -20,7 +21,7 @@ export default class GamePageView extends Component {
 
 		/** @private {Component} */
 		this._button = new Component({container: document.getElementById("back-button")});
-		this._button.listen("click", this._onButtonClick.bind(this));
+		this._button.listen(Events.CLICK, this._onButtonClick.bind(this));
 		/** @private {?Game} */
 		this._game = null;
 		/** @private {GameController} */
@@ -40,7 +41,7 @@ export default class GamePageView extends Component {
 		this._timeContainer = new Component({container: document.getElementsByClassName("time-container")[0]});
 
 		this._timer = new Timer();
-		this._timer.addEventListener("ontick", () => {
+		this._timer.addEventListener(Events.TICK, () => {
 			if (!this._game)
 			{
 				return;
@@ -53,10 +54,10 @@ export default class GamePageView extends Component {
 	 * @param {!Game} game
 	 */
 	initGame(game) {
-		this.destruct();
+		this._clear();
 
 		this._game = game;
-		this._game.addEventListener("changeGameState", this.invalidate.bind(this));
+		this._game.addEventListener(CustomEvents.CHANGE_GAME_STATE, this.invalidate.bind(this));
 		this._gameController.initGame(game);
 		if (!this._game.isGameOver())
 		{
@@ -205,7 +206,7 @@ export default class GamePageView extends Component {
 	_createFieldItem(row, column, modifier = "") {
 		const coordinate = {row, column};
 		const item = new FieldItemView(coordinate, modifier);
-		item.listen("click", this._onItemClick.bind(this, item));
+		item.listen(Events.CLICK, this._onItemClick.bind(this, item));
 		return item;
 	}
 
@@ -216,8 +217,8 @@ export default class GamePageView extends Component {
 			this._gameController.surrender();
 		}
 
-		this.dispatch("showGamesList");
-		this.destruct();
+		this.dispatch(CustomEvents.SHOW_GAMES_LIST);
+		this._clear();
 	}
 
 	/**
@@ -237,12 +238,17 @@ export default class GamePageView extends Component {
 		this._opponentField.setTextContent("");
 	}
 
-	destruct() {
+	/** @private */
+	_clear() {
 		if (this._game)
 		{
 			this._clearPage();
-			this._game.removeEventListener("changeGameState", this.invalidate.bind(this));
+			this._game.removeEventListener(CustomEvents.CHANGE_GAME_STATE, this.invalidate.bind(this));
 			this._timer.stop();
 		}
+	}
+
+	destroy() {
+		this._clear();
 	}
 };

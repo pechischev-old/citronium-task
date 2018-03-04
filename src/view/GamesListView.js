@@ -2,17 +2,16 @@ import Component from '../components/Component';
 import Game from '../model/Game';
 import User from '../model/User';
 import GameView from './GameView';
+import {default as CustomEvents} from '../event/CustomEvents';
+import {default as Events} from '../event/Events';
 
 export default class GamesListView extends Component {
 	/**
-	 * @param {Array<Game>} gamesList
 	 * @param {User} user
 	 */
-	constructor(gamesList, user) {
+	constructor(user) {
 		const container = document.getElementById("games-list");
 		super({container});
-		/** @private {Array<Game>} */
-		this._gamesLizt = gamesList;
 		/** @private {Array<GameView>} */
 		this._gamesListView = [];
 		/** @private {Component} */
@@ -21,18 +20,18 @@ export default class GamesListView extends Component {
 		userContainer.setTextContent(user.name());
 		/** @private {Component} */
 		this._addGameButton = new Component({container: document.getElementById("create-game")});
-		this._addGameButton.listen("click", () => {
-			this.dispatch("appendGame");
+		this._addGameButton.listen(Events.CLICK, () => {
+			this.dispatch(CustomEvents.APPEND_GAME);
 		});
 	}
 
 	/**
-	 * @param {!Game} game
+	 * @param {Game} game
 	 */
 	appendGameView(game) {
 		const gameView = new GameView(game);
-		gameView.listen("click", () => {
-			this.dispatch("showGamePage", {id: game.id()});
+		gameView.listen(Events.CLICK, () => {
+			this.dispatch(CustomEvents.SHOW_GAME_PAGE, {id: game.id()});
 		});
 		this._gamesContainer.addChild(gameView);
 		this._gamesListView.push(gameView);

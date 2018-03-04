@@ -3,32 +3,34 @@ import EventDispatcher from '../components/EventDispatcher';
 import {default as Player} from './Player';
 import {default as Result} from './Result';
 import {default as GameState} from './GameState';
+import {default as CustomEvents} from '../event/CustomEvents';
+import {default as utils} from '../components/utils';
 
 export default class Game extends EventDispatcher {
 	/**
-	 * @param {!User} owner
+	 * @param {User} owner
 	 * @param {number} size
-	 * @param {!Array<string>} fieldData
+	 * @param {Array<Array<string>>} fieldData
 	 */
 	constructor(owner, size, fieldData = null) {
 		super();
 		/** @private {string} */
-		this._id = 'id-' + Math.random().toString(36).substr(2, 16);
+		this._id = utils.getUid();
 
 		/** @private {number} */
 		this._fieldSize = size;
 
-		/** @private {!Array<!Array<string>>} */
+		/** @private {Array<Array<string>>} */
 		this._fieldData = fieldData ? fieldData : this._initField();
 
-		/** @private {!GameState} */
+		/** @private {GameState} */
 		this._state = GameState.READY;
-		/** @private {!Result} */
+		/** @private {Result} */
 		this._result = null;
 
-		/** @private {!User} */
+		/** @private {User} */
 		this._owner = owner;
-		/** @private {?User} */
+		/** @private {User} */
 		this._opponent = null;
 		/** @private {Player} */
 		this._currentPlayer = Player.OWNER;
@@ -70,15 +72,7 @@ export default class Game extends EventDispatcher {
 		this._durationTime = this.isGameOver() ? this._durationTime : Date.now() - this._startTime;
 		const time = new Date(this._durationTime);
 
-		const formatTime = (time) => {
-			if (time < 10)
-			{
-				return `0${time}`;
-			}
-			return time;
-		};
-
-		return `00:${formatTime(time.getMinutes())}:${formatTime(time.getSeconds())}`;
+		return `00:${utils.formatTime(time.getMinutes())}:${utils.formatTime(time.getSeconds())}`;
 	}
 
 	/**
@@ -119,18 +113,18 @@ export default class Game extends EventDispatcher {
 		if (!this._result)
 		{
 			this._result = result;
-			this.dispatch("changeResult");
+			this.dispatch(CustomEvents.CHANGE_GAME_RESULT);
 		}
 	}
 
 	/** @return {boolean} */
 	isPlaying() {
-		return this._state == GameState.PLAYING;
+		return (this._state == GameState.PLAYING);
 	}
 
 	/** @return {boolean} */
 	isReady() {
-		return this._state == GameState.READY;
+		return (this._state == GameState.READY);
 	}
 
 	/**
@@ -158,43 +152,43 @@ export default class Game extends EventDispatcher {
 	}
 
 	/**
-	 * @param {!User} opponent
+	 * @param {User} opponent
 	 */
 	setOpponent(opponent) {
 		if (this._opponent != opponent)
 		{
 			this._opponent = opponent;
-			this.dispatch("changeOpponent");
+			this.dispatch(CustomEvents.CHANGE_GAME_OPPONENT);
 		}
 	}
 
 	/**
-	 * @returns {?User}
+	 * @returns {User}
 	 */
 	opponent() {
 		return this._opponent;
 	}
 
 	/**
-	 * @returns {!User}
+	 * @returns {User}
 	 */
 	owner() {
 		return this._owner;
 	}
 
 	/**
-	 * @param {!GameState} state
+	 * @param {GameState} state
 	 */
 	setState(state) {
 		if (this._state != state)
 		{
 			this._state = state;
-			this.dispatch("changeGameState");
+			this.dispatch(CustomEvents.CHANGE_GAME_STATE);
 		}
 	}
 
 	/**
-	 * @return {!GameState}
+	 * @return {GameState}
 	 */
 	state() {
 		return this._state
@@ -205,19 +199,25 @@ export default class Game extends EventDispatcher {
 	 */
 	setFieldData(data) {
 		this._fieldData = data;
-		this.dispatch("updateFieldData");
+		this.dispatch(CustomEvents.CHANGE_GAME_FIELD_DATA);
 	}
 
+	/**
+	 * @return {Array<Array<string>>}
+	 */
 	fieldData() {
 		return this._fieldData.slice();
 	}
 
+	/**
+	 * @return {number}
+	 */
 	fieldSize() {
 		return this._fieldSize;
 	}
 
 	/**
-	 * @return {!Array<!Array<string>>}
+	 * @return {Array<Array<string>>}
 	 * @private
 	 */
 	_initField() {
